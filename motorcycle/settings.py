@@ -73,12 +73,27 @@ WSGI_APPLICATION = 'motorcycle.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+import shutil
+
+if os.environ.get('VERCEL') == '1':
+    db_path = '/tmp/db.sqlite3'
+    if not os.path.exists(db_path):
+        source_db = BASE_DIR / 'db.sqlite3'
+        if source_db.exists():
+            shutil.copy2(source_db, db_path)
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': db_path,
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 
 # Password validation
