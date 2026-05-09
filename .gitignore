@@ -1,6 +1,12 @@
-venv/
-db.sqlite3
-*.pyc
+# Python
 __pycache__/
+*.py[cod]
+*$py.class
+
+# Django
+db.sqlite3
 media/
 staticfiles/
+
+# Vercel
+.vercel/
